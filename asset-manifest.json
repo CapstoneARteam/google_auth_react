@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/google_auth_react/static/css/main.d1b05096.chunk.css",
+    "main.js": "/google_auth_react/static/js/main.1ce074eb.chunk.js",
+    "main.js.map": "/google_auth_react/static/js/main.1ce074eb.chunk.js.map",
+    "runtime-main.js": "/google_auth_react/static/js/runtime-main.8636081e.js",
+    "runtime-main.js.map": "/google_auth_react/static/js/runtime-main.8636081e.js.map",
+    "static/js/2.ada20226.chunk.js": "/google_auth_react/static/js/2.ada20226.chunk.js",
+    "static/js/2.ada20226.chunk.js.map": "/google_auth_react/static/js/2.ada20226.chunk.js.map",
+    "index.html": "/google_auth_react/index.html",
+    "precache-manifest.4644b23051139c4b945964df195342c4.js": "/google_auth_react/precache-manifest.4644b23051139c4b945964df195342c4.js",
+    "service-worker.js": "/google_auth_react/service-worker.js",
+    "static/css/main.d1b05096.chunk.css.map": "/google_auth_react/static/css/main.d1b05096.chunk.css.map",
+    "static/js/2.ada20226.chunk.js.LICENSE.txt": "/google_auth_react/static/js/2.ada20226.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/google_auth_react/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8636081e.js",
+    "static/js/2.ada20226.chunk.js",
+    "static/css/main.d1b05096.chunk.css",
+    "static/js/main.1ce074eb.chunk.js"
+  ]
+}
