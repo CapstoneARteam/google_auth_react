@@ -16,11 +16,19 @@ export default class App extends Component{
       email: '',
       profileimg: '',
       email_test:'',
+      name_test:'',
       stitch_res:[],
     }
     this.addUser = this.addUser.bind(this);
     this.getallusers = this.getallusers.bind(this);
     this.emailchange = this.emailchange.bind(this);
+    this.namechange = this.namechange.bind(this);
+    this.SearchUser=this.SearchUser.bind(this);
+    this.ChangeEmail=this.ChangeEmail.bind(this);
+
+    this.OldEmail = React.createRef();
+    this.NewEmail = React.createRef();
+
   }
 
   componentDidMount(){
@@ -45,6 +53,12 @@ export default class App extends Component{
       }
     )
     console.log(this.state)
+    this.db.collection("USERS")
+      .insertOne({
+        email: this.state.email,
+        name: this.state.username 
+      })
+      .catch(console.error);
   }
 
   addUser(event) {
@@ -52,7 +66,7 @@ export default class App extends Component{
     this.db.collection("USERS")
       .insertOne({
         email: this.state.email_test,
-        name:"hello world" 
+        name: this.state.name_test 
       })
       .catch(console.error);
   }
@@ -68,6 +82,38 @@ export default class App extends Component{
   emailchange(event){
     this.setState({email_test: event.target.value})
   }
+  namechange(event){
+    this.setState({name_test: event.target.value})
+  }
+  SearchUser(event)
+  {
+    const query ={"email":event.target.value};
+    return this.db.collection("USERS").findOne(query).then(result=>{
+      if(result){
+        console.log("Found");
+      }
+      else{
+        console.log("No found");
+      }
+      return result;
+    })}
+  ChangeEmail(event)
+  {
+      const query ={"email":this.OldEmail.current.value};
+      const update={"email":this.NewEmail.current.value};
+      return this.db.collection("USERS").findOneAndUpdate(query,update).then(result=>{
+        if(result){
+          console.log("Found and update");
+        }
+        else{
+          console.log("No found");
+        }
+        return result;
+      })
+  }
+  
+  
+  
 
   render(){
     return (
@@ -83,17 +129,24 @@ export default class App extends Component{
         
         <br />
         <br />
-        <input type="text" id ="emailinput" onChange={this.emailchange} />
+        <input type="text" id ="nameinput" placeholder="Enter name here" onChange={this.namechange}/>
+        <input type="text" id ="emailinput" placeholder="Enter email here" onChange={this.emailchange}/>
         <button id="add" onClick={this.addUser}>add </button>
         <br />
 
         <button id="list" onClick={this.getallusers}>list all</button>
         <ul>
           {this.state.stitch_res.map(info => {
-            return <li>{info.email} </li>
+            return <li>{info.email}  {info.name}</li>
           })}
-
         </ul>
+        <input type="text" id="search" placeholder="Enter email to search"onClick={this.SearchUser}/>
+        <br/>
+        <br/>
+        <input type="text" placeholder="Enter current email here" ref={this.OldEmail} />
+        <input type="text" placeholder="Enter new email here" ref={this.NewEmail}/>
+        <button onClick={this.ChangeEmail}>Change Email</button>
+
 
 
       </div>
