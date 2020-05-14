@@ -4,6 +4,8 @@ import GoogleLogin from 'react-google-login'
 //import logo from './logo.svg';
 //import './App.css';
 
+import {Stitch, AnonymousCredential, RemoteMongoClient} from "mongodb-stitch-browser-sdk"
+
 
 export default class App extends Component{
   constructor(){
@@ -13,7 +15,24 @@ export default class App extends Component{
       username : '',
       email: '',
       profileimg: '',
+      email_test:'',
+      stitch_res:[],
     }
+    this.addUser = this.addUser.bind(this);
+    this.getallusers = this.getallusers.bind(this);
+    this.emailchange = this.emailchange.bind(this);
+  }
+
+  componentDidMount(){
+    this.client = Stitch.initializeDefaultAppClient("capstonear_app-xkqng")
+    const mongodb = this.client.getServiceClient(
+      RemoteMongoClient.factory,
+      "mongodb-atlas"
+    );
+    this.db = mongodb.db("ACCOUNTS");
+    this.client.auth.loginWithCredential(new AnonymousCredential()).then(
+      console.log(this.db.collection("USERS").find({}, {limit: 50}).asArray())
+    ).catch(console.error)
   }
 
   responseGoogle = (response) => {
@@ -28,7 +47,28 @@ export default class App extends Component{
     console.log(this.state)
   }
 
+  addUser(event) {
+    event.preventDefault()
+    this.db.collection("USERS")
+      .insertOne({
+        email: this.state.email_test,
+        name:"hello world" 
+      })
+      .catch(console.error);
+  }
+
+
+  getallusers() {
+    this.db.collection("USERS").find({})
+    .asArray()
+    .then(stitch_res => this.setState({stitch_res}))
+    console.log(this.state.stitch_res)
+  }
   
+  emailchange(event){
+    this.setState({email_test: event.target.value})
+  }
+
   render(){
     return (
       <div className="App">
@@ -41,6 +81,21 @@ export default class App extends Component{
 
         {this.G_login()}
         
+        <br />
+        <br />
+        <input type="text" id ="emailinput" onChange={this.emailchange} />
+        <button id="add" onClick={this.addUser}>add </button>
+        <br />
+
+        <button id="list" onClick={this.getallusers}>list all</button>
+        <ul>
+          {this.state.stitch_res.map(info => {
+            return <li>{info.email} </li>
+          })}
+
+        </ul>
+
+
       </div>
     );
   }
